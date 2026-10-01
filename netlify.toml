@@ -1,0 +1,21 @@
+# Netlify config for the Abstra Pro website (static export of the Next.js app).
+# On Vercel nothing is needed — just import the repo, defaults are correct.
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+# Security headers for every static response.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+# APKs should download as-is — fresh check, correct content type, no HTML rewrite.
+[[headers]]
+  for = "/downloads/*.apk"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/vnd.android.package-archive"
